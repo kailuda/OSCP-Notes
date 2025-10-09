@@ -5,8 +5,152 @@ https://aditya-3.gitbook.io/oscp/readme/walkthroughs/pg-practice/hokkaido
 ```
 # NMAP
 ```bash
-nmap -p- -sCV hokkaido.pgp --open 
+nmap -p- -sCV hokkaido.pgp --open
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-09-30 17:22 EDT
+Stats: 0:00:05 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 11.46% done; ETC: 17:23 (0:00:39 remaining)
+Nmap scan report for hokkaido.pgp (192.168.166.40)
+Host is up (0.053s latency).
+Not shown: 65501 closed tcp ports (reset)
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+==80==/tcp    open  http          Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+==88==/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-09-30 21:23:03Z)
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: hokkaido-aerospace.com0., Site: Default-First-Site-Name)
+|_ssl-date: 2025-09-30T21:24:09+00:00; 0s from scanner time.
+| ssl-cert: Subject: commonName=dc.hokkaido-aerospace.com
+| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:<unsupported>, DNS:dc.hokkaido-aerospace.com
+| Not valid before: 2023-12-07T13:54:18
+|_Not valid after:  2024-12-06T13:54:18
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: hokkaido-aerospace.com0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc.hokkaido-aerospace.com
+| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:<unsupported>, DNS:dc.hokkaido-aerospace.com
+| Not valid before: 2023-12-07T13:54:18
+|_Not valid after:  2024-12-06T13:54:18
+|_ssl-date: 2025-09-30T21:24:08+00:00; 0s from scanner time.
+#################################################################
+1433/tcp  open  ms-sql-s      Microsoft SQL Server 2019 15.00.2000.00; RTM
+#################################################################
+|ms-sql-ntlm-info: |   192.168.166.40:1433: 
+|     Target_Name: HAERO
+|     NetBIOS_Domain_Name: HAERO
+|     NetBIOS_Computer_Name: DC
+|     DNS_Domain_Name: hokkaido-aerospace.com
+|     DNS_Computer_Name: dc.hokkaido-aerospace.com
+|     DNS_Tree_Name: hokkaido-aerospace.com
+|_    Product_Version: 10.0.20348
+| ms-sql-info: 
+|   192.168.166.40:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2019 RTM
+|       number: 15.00.2000.00
+|       Product: Microsoft SQL Server 2019
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
+|_ssl-date: 2025-09-30T21:24:09+00:00; 0s from scanner time.
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2024-08-02T02:28:44
+|_Not valid after:  2054-08-02T02:28:44
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: hokkaido-aerospace.com0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc.hokkaido-aerospace.com
+| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:<unsupported>, DNS:dc.hokkaido-aerospace.com
+| Not valid before: 2023-12-07T13:54:18
+|_Not valid after:  2024-12-06T13:54:18
+|_ssl-date: 2025-09-30T21:24:09+00:00; 0s from scanner time.
+3269/tcp  open  ssl/ldap      Microsoft Windows Active Directory LDAP (Domain: hokkaido-aerospace.com0., Site: Default-First-Site-Name)
+| ssl-cert: Subject: commonName=dc.hokkaido-aerospace.com
+| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1:<unsupported>, DNS:dc.hokkaido-aerospace.com
+| Not valid before: 2023-12-07T13:54:18
+|_Not valid after:  2024-12-06T13:54:18
+|_ssl-date: 2025-09-30T21:24:08+00:00; 0s from scanner time.
+3389/tcp  open  ms-wbt-server Microsoft Terminal Services
+|_ssl-date: 2025-09-30T21:24:08+00:00; 0s from scanner time.
+| ssl-cert: Subject: commonName=dc.hokkaido-aerospace.com
+| Not valid before: 2025-09-29T21:19:24
+|_Not valid after:  2026-03-31T21:19:24
+| rdp-ntlm-info: 
+|   Target_Name: HAERO
+|   NetBIOS_Domain_Name: HAERO
+|   NetBIOS_Computer_Name: DC
+|   DNS_Domain_Name: hokkaido-aerospace.com
+|   DNS_Computer_Name: dc.hokkaido-aerospace.com
+|   DNS_Tree_Name: hokkaido-aerospace.com
+|   Product_Version: 10.0.20348
+|_  System_Time: 2025-09-30T21:24:00+00:00
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+8530/tcp  open  http          Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-title: 403 - Forbidden: Access is denied.
+8531/tcp  open  unknown
+9389/tcp  open  mc-nmf        .NET Message Framing
+47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0
+49664/tcp open  msrpc         Microsoft Windows RPC
+49665/tcp open  msrpc         Microsoft Windows RPC
+49666/tcp open  msrpc         Microsoft Windows RPC
+49667/tcp open  msrpc         Microsoft Windows RPC
+49668/tcp open  msrpc         Microsoft Windows RPC
+49670/tcp open  msrpc         Microsoft Windows RPC
+49675/tcp open  msrpc         Microsoft Windows RPC
+49684/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49685/tcp open  msrpc         Microsoft Windows RPC
+49693/tcp open  msrpc         Microsoft Windows RPC
+49700/tcp open  msrpc         Microsoft Windows RPC
+49701/tcp open  msrpc         Microsoft Windows RPC
+49712/tcp open  msrpc         Microsoft Windows RPC
+49788/tcp open  msrpc         Microsoft Windows RPC
+58538/tcp open  ms-sql-s      Microsoft SQL Server 2019 15.00.2000.00; RTM
+| ms-sql-info: 
+|   192.168.166.40:58538: 
+|     Version: 
+|       name: Microsoft SQL Server 2019 RTM
+|       number: 15.00.2000.00
+|       Product: Microsoft SQL Server 2019
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 58538
+| ms-sql-ntlm-info: 
+|   192.168.166.40:58538: 
+|     Target_Name: HAERO
+|     NetBIOS_Domain_Name: HAERO
+|     NetBIOS_Computer_Name: DC
+|     DNS_Domain_Name: hokkaido-aerospace.com
+|     DNS_Computer_Name: dc.hokkaido-aerospace.com
+|     DNS_Tree_Name: hokkaido-aerospace.com
+|_    Product_Version: 10.0.20348
+|_ssl-date: 2025-09-30T21:24:09+00:00; 0s from scanner time.
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2024-08-02T02:28:44
+|_Not valid after:  2054-08-02T02:28:44
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2025-09-30T21:24:00
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled and required
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 95.40 seconds
 ```
+
 - windows machine, check HTTP/LDAP/KERBRUTE/ENUM4LINUX/SMBCLIENT
 
 # worth checking:
