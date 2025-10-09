@@ -1,0 +1,16 @@
+create
+virtualenv hokkaido             
+
+run
+source hokkaido/bin/activate
+
+install
+python3 -m pip install uploadserver 
+
+run
+python3 -m uploadserver
+python3 -m uploadserver --theme dark
+
+
+File upload available at /upload
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
