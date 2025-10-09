@@ -1,15 +1,15 @@
-# Links:
+Links:
 ```bash
 https://medium.com/@sakyb7/proving-grounds-hokkaido-tjnull-oscp-prep-ca34df1e6491
 https://aditya-3.gitbook.io/oscp/readme/walkthroughs/pg-practice/hokkaido
 ```
-nmap
+# NMAP
 ```bash
 nmap -p- -sCV hokkaido.pgp --open 
 ```
 - windows machine, check HTTP/LDAP/KERBRUTE/ENUM4LINUX/SMBCLIENT
 
-worth checking:
+# worth checking:
 ```bash
 1433/tcp  open  ms-sql-s
 8531/tcp  open  unknown
