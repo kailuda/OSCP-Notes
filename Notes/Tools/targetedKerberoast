@@ -1,0 +1,5 @@
+https://github.com/ShutdownRepo/targetedKerberoast
+
+https://www.thehacker.recipes/ad/movement/dacl/targeted-kerberoasting
+
+targetedKerberoast is a Python script that can, like many others (e.g. GetUserSPNs.py), print "kerberoast" hashes for user accounts that have a SPN set - but sometimes better.

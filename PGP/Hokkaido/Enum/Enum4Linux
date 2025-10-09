@@ -1,0 +1,645 @@
+num4linux-ng hokkaido.pgp -u 'guest'          
+ENUM4LINUX - next generation (v1.3.5)
+
+ ==========================
+|    Target Information    |
+ ==========================
+[*] Target ........... hokkaido.pgp
+[*] Username ......... 'guest'
+[*] Random Username .. 'pvofjrmw'
+[*] Password ......... ''
+[*] Timeout .......... 5 second(s)
+
+ =====================================
+|    Listener Scan on hokkaido.pgp    |
+ =====================================
+[*] Checking LDAP
+[+] LDAP is accessible on 389/tcp
+[*] Checking LDAPS
+[+] LDAPS is accessible on 636/tcp
+[*] Checking SMB
+[+] SMB is accessible on 445/tcp
+[*] Checking SMB over NetBIOS
+[+] SMB over NetBIOS is accessible on 139/tcp
+
+ ====================================================
+|    Domain Information via LDAP for hokkaido.pgp    |
+ ====================================================
+[*] Trying LDAP
+[+] Appears to be root/parent DC
+[+] Long domain name is: hokkaido-aerospace.com
+
+ ===========================================================
+|    NetBIOS Names and Workgroup/Domain for hokkaido.pgp    |
+ ===========================================================
+[-] Could not get NetBIOS names information via 'nmblookup': timed out
+
+ =========================================
+|    SMB Dialect Check on hokkaido.pgp    |
+ =========================================
+[*] Trying on 445/tcp
+[+] Supported dialects and settings:
+Supported dialects:                                                                                                                                                                                                                         
+  SMB 1.0: false                                                                                                                                                                                                                            
+  SMB 2.0.2: true                                                                                                                                                                                                                           
+  SMB 2.1: true                                                                                                                                                                                                                             
+  SMB 3.0: true                                                                                                                                                                                                                             
+  SMB 3.1.1: true                                                                                                                                                                                                                           
+Preferred dialect: SMB 3.0                                                                                                                                                                                                                  
+SMB1 only: false                                                                                                                                                                                                                            
+SMB signing required: true                                                                                                                                                                                                                  
+
+ ===========================================================
+|    Domain Information via SMB session for hokkaido.pgp    |
+ ===========================================================
+[*] Enumerating via unauthenticated SMB session on 445/tcp
+[+] Found domain information via SMB
+NetBIOS computer name: DC                                                                                                                                                                                                                   
+NetBIOS domain name: HAERO                                                                                                                                                                                                                  
+DNS domain: hokkaido-aerospace.com                                                                                                                                                                                                          
+FQDN: dc.hokkaido-aerospace.com                                                                                                                                                                                                             
+Derived membership: domain member                                                                                                                                                                                                           
+Derived domain: HAERO                                                                                                                                                                                                                       
+
+ =========================================
+|    RPC Session Check on hokkaido.pgp    |
+ =========================================
+[*] Check for anonymous access (null session)
+[+] Server allows authentication via username '' and password ''
+[*] Check for password authentication
+[-] Could not establish session using 'guest', password ''
+[*] Check for guest access
+[-] Could not establish guest session: STATUS_LOGON_FAILURE
+
+ ===============================================
+|    OS Information via RPC for hokkaido.pgp    |
+ ===============================================
+[*] Enumerating via unauthenticated SMB session on 445/tcp
+[+] Found OS information via SMB
+[*] Enumerating via 'srvinfo'
+[-] Skipping 'srvinfo' run, not possible with provided credentials
+[+] After merging OS information we have the following result:
+OS: Windows 10, Windows Server 2019, Windows Server 2016                                                                                                                                                                                    
+OS version: '10.0'                                                                                                                                                                                                                          
+OS release: ''                                                                                                                                                                                                                              
+OS build: '20348'                                                                                                                                                                                                                           
+Native OS: not supported                                                                                                                                                                                                                    
+Native LAN manager: not supported                                                                                                                                                                                                           
+Platform id: null                                                                                                                                                                                                                           
+Server type: null                                                                                                                                                                                                                           
+Server type string: null                                                                                                                                                                                                                    
+
+[!] Aborting remainder of tests, sessions are possible, but not with the provided credentials (see session check results)
+
+Completed after 7.59 seconds
+
+
+
+#######################################
+ENUM with info:info
+#######################################
+
+
+
+
+
+
+
+enum4linux-ng hokkaido.pgp -u 'info' -p 'info'
+ENUM4LINUX - next generation (v1.3.5)
+
+ ==========================
+|    Target Information    |
+ ==========================
+[*] Target ........... hokkaido.pgp
+[*] Username ......... 'info'
+[*] Random Username .. 'jnuqxedh'
+[*] Password ......... 'info'
+[*] Timeout .......... 5 second(s)
+
+ =====================================
+|    Listener Scan on hokkaido.pgp    |
+ =====================================
+[*] Checking LDAP
+[+] LDAP is accessible on 389/tcp
+[*] Checking LDAPS
+[+] LDAPS is accessible on 636/tcp
+[*] Checking SMB
+[+] SMB is accessible on 445/tcp
+[*] Checking SMB over NetBIOS
+[+] SMB over NetBIOS is accessible on 139/tcp
+
+ ====================================================
+|    Domain Information via LDAP for hokkaido.pgp    |
+ ====================================================
+[*] Trying LDAP
+[+] Appears to be root/parent DC
+[+] Long domain name is: hokkaido-aerospace.com
+
+ ===========================================================
+|    NetBIOS Names and Workgroup/Domain for hokkaido.pgp    |
+ ===========================================================
+[-] Could not get NetBIOS names information via 'nmblookup': timed out
+
+ =========================================
+|    SMB Dialect Check on hokkaido.pgp    |
+ =========================================
+[*] Trying on 445/tcp
+[+] Supported dialects and settings:
+Supported dialects:                                                                                                                                                                                                                         
+  SMB 1.0: false                                                                                                                                                                                                                            
+  SMB 2.0.2: true                                                                                                                                                                                                                           
+  SMB 2.1: true                                                                                                                                                                                                                             
+  SMB 3.0: true                                                                                                                                                                                                                             
+  SMB 3.1.1: true                                                                                                                                                                                                                           
+Preferred dialect: SMB 3.0                                                                                                                                                                                                                  
+SMB1 only: false                                                                                                                                                                                                                            
+SMB signing required: true                                                                                                                                                                                                                  
+
+ ===========================================================
+|    Domain Information via SMB session for hokkaido.pgp    |
+ ===========================================================
+[*] Enumerating via unauthenticated SMB session on 445/tcp
+[+] Found domain information via SMB
+NetBIOS computer name: DC                                                                                                                                                                                                                   
+NetBIOS domain name: HAERO                                                                                                                                                                                                                  
+DNS domain: hokkaido-aerospace.com                                                                                                                                                                                                          
+FQDN: dc.hokkaido-aerospace.com                                                                                                                                                                                                             
+Derived membership: domain member                                                                                                                                                                                                           
+Derived domain: HAERO                                                                                                                                                                                                                       
+
+ =========================================
+|    RPC Session Check on hokkaido.pgp    |
+ =========================================
+[*] Check for anonymous access (null session)
+[+] Server allows authentication via username '' and password ''
+[*] Check for password authentication
+[+] Server allows authentication via username 'info' and password 'info'
+[*] Check for guest access
+[-] Could not establish guest session: STATUS_LOGON_FAILURE
+
+ ===================================================
+|    Domain Information via RPC for hokkaido.pgp    |
+ ===================================================
+[+] Domain: HAERO
+[+] Domain SID: S-1-5-21-3227296914-974780204-1325941497
+[+] Membership: domain member
+
+ ===============================================
+|    OS Information via RPC for hokkaido.pgp    |
+ ===============================================
+[*] Enumerating via unauthenticated SMB session on 445/tcp
+[+] Found OS information via SMB
+[*] Enumerating via 'srvinfo'
+[+] Found OS information via 'srvinfo'
+[+] After merging OS information we have the following result:
+OS: Windows 10, Windows Server 2019, Windows Server 2016                                                                                                                                                                                    
+OS version: '10.0'                                                                                                                                                                                                                          
+OS release: ''                                                                                                                                                                                                                              
+OS build: '20348'                                                                                                                                                                                                                           
+Native OS: not supported                                                                                                                                                                                                                    
+Native LAN manager: not supported                                                                                                                                                                                                           
+Platform id: '500'                                                                                                                                                                                                                          
+Server type: '0x80102f'                                                                                                                                                                                                                     
+Server type string: Wk Sv Sql PDC Tim NT                                                                                                                                                                                                    
+
+ =====================================
+|    Users via RPC on hokkaido.pgp    |
+ =====================================
+[*] Enumerating users via 'querydispinfo'
+[+] Found 33 user(s) via 'querydispinfo'
+[*] Enumerating users via 'enumdomusers'
+[+] Found 33 user(s) via 'enumdomusers'
+[+] After merging user results we have 33 user(s) total:
+'1106':                                                                                                                                                                                                                                     
+  username: Hazel.Green                                                                                                                                                                                                                     
+  name: Hazel Green                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1107':                                                                                                                                                                                                                                     
+  username: Molly.Smith                                                                                                                                                                                                                     
+  name: Molly Smith                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1108':                                                                                                                                                                                                                                     
+  username: Alexandra.Little                                                                                                                                                                                                                
+  name: Alexandra Little                                                                                                                                                                                                                    
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1110':                                                                                                                                                                                                                                     
+  username: Victor.Kelly                                                                                                                                                                                                                    
+  name: Victor Kelly                                                                                                                                                                                                                        
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1111':                                                                                                                                                                                                                                     
+  username: Catherine.Knight                                                                                                                                                                                                                
+  name: Catherine Knight                                                                                                                                                                                                                    
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1112':                                                                                                                                                                                                                                     
+  username: Angela.Davies                                                                                                                                                                                                                   
+  name: Angela Davies                                                                                                                                                                                                                       
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1113':                                                                                                                                                                                                                                     
+  username: Molly.Edwards                                                                                                                                                                                                                   
+  name: Molly Edwards                                                                                                                                                                                                                       
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1114':                                                                                                                                                                                                                                     
+  username: Tracy.Wood                                                                                                                                                                                                                      
+  name: Tracy Wood                                                                                                                                                                                                                          
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1115':                                                                                                                                                                                                                                     
+  username: Lynne.Tyler                                                                                                                                                                                                                     
+  name: Lynne Tyler                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1116':                                                                                                                                                                                                                                     
+  username: Charlene.Wallace                                                                                                                                                                                                                
+  name: Charlene Wallace                                                                                                                                                                                                                    
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1117':                                                                                                                                                                                                                                     
+  username: Cheryl.Singh                                                                                                                                                                                                                    
+  name: Cheryl Singh                                                                                                                                                                                                                        
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1118':                                                                                                                                                                                                                                     
+  username: Sian.Gordon                                                                                                                                                                                                                     
+  name: Sian Gordon                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1119':                                                                                                                                                                                                                                     
+  username: Gordon.Brown                                                                                                                                                                                                                    
+  name: Gordon Brown                                                                                                                                                                                                                        
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1120':                                                                                                                                                                                                                                     
+  username: Irene.Dean                                                                                                                                                                                                                      
+  name: Irene Dean                                                                                                                                                                                                                          
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1121':                                                                                                                                                                                                                                     
+  username: Anthony.Anderson                                                                                                                                                                                                                
+  name: Anthony Anderson                                                                                                                                                                                                                    
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1122':                                                                                                                                                                                                                                     
+  username: Julian.Davies                                                                                                                                                                                                                   
+  name: Julian Davies                                                                                                                                                                                                                       
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1123':                                                                                                                                                                                                                                     
+  username: Hannah.O'Neill                                                                                                                                                                                                                  
+  name: Hannah O'Neill                                                                                                                                                                                                                      
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1124':                                                                                                                                                                                                                                     
+  username: Rachel.Jones                                                                                                                                                                                                                    
+  name: Rachel Jones                                                                                                                                                                                                                        
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1125':                                                                                                                                                                                                                                     
+  username: Declan.Woodward                                                                                                                                                                                                                 
+  name: Declan Woodward                                                                                                                                                                                                                     
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1126':                                                                                                                                                                                                                                     
+  username: Annette.Buckley                                                                                                                                                                                                                 
+  name: Annette Buckley                                                                                                                                                                                                                     
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1127':                                                                                                                                                                                                                                     
+  username: Elliott.Jones                                                                                                                                                                                                                   
+  name: Elliott Jones                                                                                                                                                                                                                       
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1128':                                                                                                                                                                                                                                     
+  username: Grace.Lees                                                                                                                                                                                                                      
+  name: Grace Lees                                                                                                                                                                                                                          
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1129':                                                                                                                                                                                                                                     
+  username: Deborah.Francis                                                                                                                                                                                                                 
+  name: Deborah Francis                                                                                                                                                                                                                     
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1131':                                                                                                                                                                                                                                     
+  username: Bruce.Cartwright                                                                                                                                                                                                                
+  name: Bruce Cartwright                                                                                                                                                                                                                    
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1132':                                                                                                                                                                                                                                     
+  username: Nigel.Brown                                                                                                                                                                                                                     
+  name: Nigel Brown                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1133':                                                                                                                                                                                                                                     
+  username: Derek.Wyatt                                                                                                                                                                                                                     
+  name: Derek Wyatt                                                                                                                                                                                                                         
+  acb: '0x00000214'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1134':                                                                                                                                                                                                                                     
+  username: discovery                                                                                                                                                                                                                       
+  name: discovery                                                                                                                                                                                                                           
+  acb: '0x00000210'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1135':                                                                                                                                                                                                                                     
+  username: maintenance                                                                                                                                                                                                                     
+  name: maintenance                                                                                                                                                                                                                         
+  acb: '0x00000210'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1139':                                                                                                                                                                                                                                     
+  username: hrapp-service                                                                                                                                                                                                                   
+  name: hrapp-service                                                                                                                                                                                                                       
+  acb: '0x00000210'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'1601':                                                                                                                                                                                                                                     
+  username: info                                                                                                                                                                                                                            
+  name: info                                                                                                                                                                                                                                
+  acb: '0x00000210'                                                                                                                                                                                                                         
+  description: (null)                                                                                                                                                                                                                       
+'500':                                                                                                                                                                                                                                      
+  username: Administrator                                                                                                                                                                                                                   
+  name: (null)                                                                                                                                                                                                                              
+  acb: '0x00000210'                                                                                                                                                                                                                         
+  description: Built-in account for administering the computer/domain                                                                                                                                                                       
+'501':                                                                                                                                                                                                                                      
+  username: Guest                                                                                                                                                                                                                           
+  name: (null)                                                                                                                                                                                                                              
+  acb: '0x00000215'                                                                                                                                                                                                                         
+  description: Built-in account for guest access to the computer/domain                                                                                                                                                                     
+'502':                                                                                                                                                                                                                                      
+  username: krbtgt                                                                                                                                                                                                                          
+  name: (null)                                                                                                                                                                                                                              
+  acb: '0x00000011'                                                                                                                                                                                                                         
+  description: Key Distribution Center Service Account                                                                                                                                                                                      
+
+ ======================================
+|    Groups via RPC on hokkaido.pgp    |
+ ======================================
+[*] Enumerating local groups
+[+] Found 8 group(s) via 'enumalsgroups domain'
+[*] Enumerating builtin groups
+[+] Found 28 group(s) via 'enumalsgroups builtin'
+[*] Enumerating domain groups
+[+] Found 22 group(s) via 'enumdomgroups'
+[+] After merging groups results we have 58 group(s) total:
+'1101':                                                                                                                                                                                                                                     
+  groupname: DnsAdmins                                                                                                                                                                                                                      
+  type: local                                                                                                                                                                                                                               
+'1102':                                                                                                                                                                                                                                     
+  groupname: DnsUpdateProxy                                                                                                                                                                                                                 
+  type: domain                                                                                                                                                                                                                              
+'1103':                                                                                                                                                                                                                                     
+  groupname: WSUS Administrators                                                                                                                                                                                                            
+  type: local                                                                                                                                                                                                                               
+'1104':                                                                                                                                                                                                                                     
+  groupname: WSUS Reporters                                                                                                                                                                                                                 
+  type: local                                                                                                                                                                                                                               
+'1105':                                                                                                                                                                                                                                     
+  groupname: it                                                                                                                                                                                                                             
+  type: domain                                                                                                                                                                                                                              
+'1109':                                                                                                                                                                                                                                     
+  groupname: staff                                                                                                                                                                                                                          
+  type: domain                                                                                                                                                                                                                              
+'1130':                                                                                                                                                                                                                                     
+  groupname: management                                                                                                                                                                                                                     
+  type: domain                                                                                                                                                                                                                              
+'1137':                                                                                                                                                                                                                                     
+  groupname: SQLServer2005SQLBrowserUser$DC                                                                                                                                                                                                 
+  type: local                                                                                                                                                                                                                               
+'1138':                                                                                                                                                                                                                                     
+  groupname: services                                                                                                                                                                                                                       
+  type: domain                                                                                                                                                                                                                              
+'1140':                                                                                                                                                                                                                                     
+  groupname: Tier2-Admins                                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'1141':                                                                                                                                                                                                                                     
+  groupname: Tier1-Admins                                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'1142':                                                                                                                                                                                                                                     
+  groupname: Tier0-Admins                                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'498':                                                                                                                                                                                                                                      
+  groupname: Enterprise Read-only Domain Controllers                                                                                                                                                                                        
+  type: domain                                                                                                                                                                                                                              
+'512':                                                                                                                                                                                                                                      
+  groupname: Domain Admins                                                                                                                                                                                                                  
+  type: domain                                                                                                                                                                                                                              
+'513':                                                                                                                                                                                                                                      
+  groupname: Domain Users                                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'514':                                                                                                                                                                                                                                      
+  groupname: Domain Guests                                                                                                                                                                                                                  
+  type: domain                                                                                                                                                                                                                              
+'515':                                                                                                                                                                                                                                      
+  groupname: Domain Computers                                                                                                                                                                                                               
+  type: domain                                                                                                                                                                                                                              
+'516':                                                                                                                                                                                                                                      
+  groupname: Domain Controllers                                                                                                                                                                                                             
+  type: domain                                                                                                                                                                                                                              
+'517':                                                                                                                                                                                                                                      
+  groupname: Cert Publishers                                                                                                                                                                                                                
+  type: local                                                                                                                                                                                                                               
+'518':                                                                                                                                                                                                                                      
+  groupname: Schema Admins                                                                                                                                                                                                                  
+  type: domain                                                                                                                                                                                                                              
+'519':                                                                                                                                                                                                                                      
+  groupname: Enterprise Admins                                                                                                                                                                                                              
+  type: domain                                                                                                                                                                                                                              
+'520':                                                                                                                                                                                                                                      
+  groupname: Group Policy Creator Owners                                                                                                                                                                                                    
+  type: domain                                                                                                                                                                                                                              
+'521':                                                                                                                                                                                                                                      
+  groupname: Read-only Domain Controllers                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'522':                                                                                                                                                                                                                                      
+  groupname: Cloneable Domain Controllers                                                                                                                                                                                                   
+  type: domain                                                                                                                                                                                                                              
+'525':                                                                                                                                                                                                                                      
+  groupname: Protected Users                                                                                                                                                                                                                
+  type: domain                                                                                                                                                                                                                              
+'526':                                                                                                                                                                                                                                      
+  groupname: Key Admins                                                                                                                                                                                                                     
+  type: domain                                                                                                                                                                                                                              
+'527':                                                                                                                                                                                                                                      
+  groupname: Enterprise Key Admins                                                                                                                                                                                                          
+  type: domain                                                                                                                                                                                                                              
+'544':                                                                                                                                                                                                                                      
+  groupname: Administrators                                                                                                                                                                                                                 
+  type: builtin                                                                                                                                                                                                                             
+'545':                                                                                                                                                                                                                                      
+  groupname: Users                                                                                                                                                                                                                          
+  type: builtin                                                                                                                                                                                                                             
+'546':                                                                                                                                                                                                                                      
+  groupname: Guests                                                                                                                                                                                                                         
+  type: builtin                                                                                                                                                                                                                             
+'548':                                                                                                                                                                                                                                      
+  groupname: Account Operators                                                                                                                                                                                                              
+  type: builtin                                                                                                                                                                                                                             
+'549':                                                                                                                                                                                                                                      
+  groupname: Server Operators                                                                                                                                                                                                               
+  type: builtin                                                                                                                                                                                                                             
+'550':                                                                                                                                                                                                                                      
+  groupname: Print Operators                                                                                                                                                                                                                
+  type: builtin                                                                                                                                                                                                                             
+'551':                                                                                                                                                                                                                                      
+  groupname: Backup Operators                                                                                                                                                                                                               
+  type: builtin                                                                                                                                                                                                                             
+'552':                                                                                                                                                                                                                                      
+  groupname: Replicator                                                                                                                                                                                                                     
+  type: builtin                                                                                                                                                                                                                             
+'553':                                                                                                                                                                                                                                      
+  groupname: RAS and IAS Servers                                                                                                                                                                                                            
+  type: local                                                                                                                                                                                                                               
+'554':                                                                                                                                                                                                                                      
+  groupname: Pre-Windows 2000 Compatible Access                                                                                                                                                                                             
+  type: builtin                                                                                                                                                                                                                             
+'555':                                                                                                                                                                                                                                      
+  groupname: Remote Desktop Users                                                                                                                                                                                                           
+  type: builtin                                                                                                                                                                                                                             
+'556':                                                                                                                                                                                                                                      
+  groupname: Network Configuration Operators                                                                                                                                                                                                
+  type: builtin                                                                                                                                                                                                                             
+'557':                                                                                                                                                                                                                                      
+  groupname: Incoming Forest Trust Builders                                                                                                                                                                                                 
+  type: builtin                                                                                                                                                                                                                             
+'558':                                                                                                                                                                                                                                      
+  groupname: Performance Monitor Users                                                                                                                                                                                                      
+  type: builtin                                                                                                                                                                                                                             
+'559':                                                                                                                                                                                                                                      
+  groupname: Performance Log Users                                                                                                                                                                                                          
+  type: builtin                                                                                                                                                                                                                             
+'560':                                                                                                                                                                                                                                      
+  groupname: Windows Authorization Access Group                                                                                                                                                                                             
+  type: builtin                                                                                                                                                                                                                             
+'561':                                                                                                                                                                                                                                      
+  groupname: Terminal Server License Servers                                                                                                                                                                                                
+  type: builtin                                                                                                                                                                                                                             
+'562':                                                                                                                                                                                                                                      
+  groupname: Distributed COM Users                                                                                                                                                                                                          
+  type: builtin                                                                                                                                                                                                                             
+'568':                                                                                                                                                                                                                                      
+  groupname: IIS_IUSRS                                                                                                                                                                                                                      
+  type: builtin                                                                                                                                                                                                                             
+'569':                                                                                                                                                                                                                                      
+  groupname: Cryptographic Operators                                                                                                                                                                                                        
+  type: builtin                                                                                                                                                                                                                             
+'571':                                                                                                                                                                                                                                      
+  groupname: Allowed RODC Password Replication Group                                                                                                                                                                                        
+  type: local                                                                                                                                                                                                                               
+'572':                                                                                                                                                                                                                                      
+  groupname: Denied RODC Password Replication Group                                                                                                                                                                                         
+  type: local                                                                                                                                                                                                                               
+'573':                                                                                                                                                                                                                                      
+  groupname: Event Log Readers                                                                                                                                                                                                              
+  type: builtin                                                                                                                                                                                                                             
+'574':                                                                                                                                                                                                                                      
+  groupname: Certificate Service DCOM Access                                                                                                                                                                                                
+  type: builtin                                                                                                                                                                                                                             
+'575':                                                                                                                                                                                                                                      
+  groupname: RDS Remote Access Servers                                                                                                                                                                                                      
+  type: builtin                                                                                                                                                                                                                             
+'576':                                                                                                                                                                                                                                      
+  groupname: RDS Endpoint Servers                                                                                                                                                                                                           
+  type: builtin                                                                                                                                                                                                                             
+'577':                                                                                                                                                                                                                                      
+  groupname: RDS Management Servers                                                                                                                                                                                                         
+  type: builtin                                                                                                                                                                                                                             
+'578':                                                                                                                                                                                                                                      
+  groupname: Hyper-V Administrators                                                                                                                                                                                                         
+  type: builtin                                                                                                                                                                                                                             
+'579':                                                                                                                                                                                                                                      
+  groupname: Access Control Assistance Operators                                                                                                                                                                                            
+  type: builtin                                                                                                                                                                                                                             
+'580':                                                                                                                                                                                                                                      
+  groupname: Remote Management Users                                                                                                                                                                                                        
+  type: builtin                                                                                                                                                                                                                             
+'582':                                                                                                                                                                                                                                      
+  groupname: Storage Replica Administrators                                                                                                                                                                                                 
+  type: builtin                                                                                                                                                                                                                             
+
+ ======================================
+|    Shares via RPC on hokkaido.pgp    |
+ ======================================
+[*] Enumerating shares
+[+] Found 9 share(s):
+ADMIN$:                                                                                                                                                                                                                                     
+  comment: Remote Admin                                                                                                                                                                                                                     
+  type: Disk                                                                                                                                                                                                                                
+C$:                                                                                                                                                                                                                                         
+  comment: Default share                                                                                                                                                                                                                    
+  type: Disk                                                                                                                                                                                                                                
+IPC$:                                                                                                                                                                                                                                       
+  comment: Remote IPC                                                                                                                                                                                                                       
+  type: IPC                                                                                                                                                                                                                                 
+NETLOGON:                                                                                                                                                                                                                                   
+  comment: Logon server share                                                                                                                                                                                                               
+  type: Disk                                                                                                                                                                                                                                
+SYSVOL:                                                                                                                                                                                                                                     
+  comment: Logon server share                                                                                                                                                                                                               
+  type: Disk                                                                                                                                                                                                                                
+UpdateServicesPackages:                                                                                                                                                                                                                     
+  comment: A network share to be used by client systems for collecting all software packages (usually applications) published on this WSUS system.                                                                                          
+  type: Disk                                                                                                                                                                                                                                
+WSUSTemp:                                                                                                                                                                                                                                   
+  comment: A network share used by Local Publishing from a Remote WSUS Console Instance.                                                                                                                                                    
+  type: Disk                                                                                                                                                                                                                                
+WsusContent:                                                                                                                                                                                                                                
+  comment: A network share to be used by Local Publishing to place published content on this WSUS system.                                                                                                                                   
+  type: Disk                                                                                                                                                                                                                                
+homes:                                                                                                                                                                                                                                      
+  comment: user homes                                                                                                                                                                                                                       
+  type: Disk                                                                                                                                                                                                                                
+[*] Testing share ADMIN$
+[+] Mapping: DENIED, Listing: N/A
+[*] Testing share C$
+[+] Mapping: DENIED, Listing: N/A
+[*] Testing share IPC$
+[+] Mapping: OK, Listing: NOT SUPPORTED
+[*] Testing share NETLOGON
+[+] Mapping: OK, Listing: OK
+[*] Testing share SYSVOL
+[+] Mapping: OK, Listing: OK
+[*] Testing share UpdateServicesPackages
+[+] Mapping: OK, Listing: OK
+[*] Testing share WSUSTemp
+[+] Mapping: OK, Listing: DENIED
+[*] Testing share WsusContent
+[+] Mapping: OK, Listing: OK
+[*] Testing share homes
+[+] Mapping: OK, Listing: OK
+
+ =========================================
+|    Policies via RPC for hokkaido.pgp    |
+ =========================================
+[*] Trying port 445/tcp
+[+] Found policy:
+Domain password information:                                                                                                                                                                                                                
+  Password history length: 24                                                                                                                                                                                                               
+  Minimum password length: None                                                                                                                                                                                                             
+  Minimum password age: 1 day 4 minutes                                                                                                                                                                                                     
+  Maximum password age: not set                                                                                                                                                                                                             
+  Password properties:                                                                                                                                                                                                                      
+  - DOMAIN_PASSWORD_COMPLEX: false                                                                                                                                                                                                          
+  - DOMAIN_PASSWORD_NO_ANON_CHANGE: false                                                                                                                                                                                                   
+  - DOMAIN_PASSWORD_NO_CLEAR_CHANGE: false                                                                                                                                                                                                  
+  - DOMAIN_PASSWORD_LOCKOUT_ADMINS: false                                                                                                                                                                                                   
+  - DOMAIN_PASSWORD_PASSWORD_STORE_CLEARTEXT: false                                                                                                                                                                                         
+  - DOMAIN_PASSWORD_REFUSE_PASSWORD_CHANGE: false                                                                                                                                                                                           
+Domain lockout information:                                                                                                                                                                                                                 
+  Lockout observation window: 10 minutes                                                                                                                                                                                                    
+  Lockout duration: 10 minutes                                                                                                                                                                                                              
+  Lockout threshold: None                                                                                                                                                                                                                   
+Domain logoff information:                                                                                                                                                                                                                  
+  Force logoff time: not set                                                                                                                                                                                                                
+
+ =========================================
+|    Printers via RPC for hokkaido.pgp    |
+ =========================================
+[-] Could not get printers via 'enumprinters': WERR_INVALID_NAME
+
+Completed after 38.35 seconds
