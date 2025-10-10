@@ -157,13 +157,13 @@ Nmap done: 1 IP address (1 host up) scanned in 95.40 seconds
 
 # Worth checking:
 ```bash
-80/443 - HTTP
-139,445 - SMB
-389,636, 3268, 3269 - SMB
-1433/tcp  open  ms-sql-s
+80, 443 - HTTP
+139, 445 - SMB
+389, 636, 3268, 3269 - LDAP
+1433 -  ms-sql-s
 3389 - RDP 
 5985 - WinRM
-8531/tcp  open  unknown
+8531 - unknown
 ```
 
 Kerbrute gives us 4 usernames:
