@@ -1,0 +1,1 @@
+smbmap -H flight.htb -u 'svc_apache' -p 'S@Ss!K@*t13'
