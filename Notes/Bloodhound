@@ -1,3 +1,9 @@
 Japierdolekurwamac1!!!
 
+https://www.geeksforgeeks.org/ethical-hacking/bloodhound-and-grabbing-data/
+
 bloodhound-python -u "Hazel.Green" -p 'haze1988' -d hokkaido-aerospace.com -c all --zip -ns 192.168.207.40
+
+
+Set your username: git config --global user.name "kailuda"
+Set your email address: git config --global user.email "lukasz.dawidit@gmail.com"
